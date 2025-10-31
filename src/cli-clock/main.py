@@ -76,14 +76,9 @@ def main(stdscr) -> None:
         sys.exit(0)
 
 
-if __name__ == '__main__':
-    # tarty1
-    # sblood
-    # roman
-    # rev
-    # georgia11
-    # fraktur
-    # fire_font-s
-    # colossal
-    # art.font_list()
+def launch() -> None:
     curses.wrapper(main)
+
+
+if __name__ == '__main__':
+    launch()
