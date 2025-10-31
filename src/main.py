@@ -19,6 +19,30 @@ tips: list[str] = ["[Q]uit", "[C]lock", "[T]imer", "[A]larm", "[S]topwatch"]
 
 
 # ===== Functions =====
+def draw_time(stdscr, text: tuple[str], height: int, width: int) -> None:
+    for idx, line in enumerate(text):
+        x_offset = INITIAL_X_OFFSET
+        if CONFIG["should_update_offset"]:
+            x_offset = get_longest(text)
+        stdscr.addstr(
+            int(height * 0.5 - (len(text) * 0.5 - idx + 1)),
+            int(width * 0.5 - x_offset * 0.5),
+            line)
+
+
+def draw_date(stdscr, time_text: tuple[str], height: int, width: int) -> None:
+    date_text: str = f"{CONFIG['date_prefix']}{get_time(CONFIG['date_format'])}{CONFIG['date_suffix']}"
+    stdscr.addstr(
+        int((height * 0.5 - len(time_text) * 0.5 - 2)),
+        int((width * 0.5 - len(date_text) * 0.5)),
+        date_text)
+
+
+def draw_hints(stdscr, height: int, width: int) -> None:
+    tips_buffer: str = "     " + "     ".join(tips) + "     "
+    stdscr.addstr(height - 1, width // 2 - len(tips_buffer) // 2, tips_buffer)
+
+
 def main(stdscr) -> None:
     curses.curs_set(False)
     stdscr.nodelay(True)
@@ -33,20 +57,10 @@ def main(stdscr) -> None:
             time_text: tuple[str] = generate_ascii(get_time())
 
             try:
+                draw_time(stdscr, time_text, height, width)
                 if CONFIG["show_date"]:
-                    date_text: str = f"{CONFIG['date_prefix']}{get_time(CONFIG['date_format'])}{CONFIG['date_suffix']}"
-                    stdscr.addstr(height // 2 - len(time_text) // 2 - 2, width // 2 - len(date_text) // 2, date_text)
-                for idx, line in enumerate(time_text):
-                    center = len(time_text) // 2
-                    h_offset = center - idx + 1
-                    if CONFIG["should_update_offset"]:
-                        x_offset = get_longest(time_text)
-                    else:
-                        x_offset = INITIAL_X_OFFSET
-                    stdscr.addstr(height // 2 - h_offset, width // 2 - x_offset // 2, line)
-
-                tips_buffer: str = "     " + "     ".join(tips) + "     "
-                stdscr.addstr(height-1, width // 2 - len(tips_buffer) // 2, tips_buffer)
+                    draw_date(stdscr, time_text, height, width)
+                draw_hints(stdscr, height, width)
             except curses.error:
                 pass  # Terminal too small...
 
