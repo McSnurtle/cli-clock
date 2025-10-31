@@ -24,8 +24,6 @@ def main(stdscr) -> None:
     stdscr.nodelay(True)
     stdscr.keypad(True)
 
-    sound_threads: list[Thread] = []
-
     try:
         while RUNNING:
             stdscr.erase()
