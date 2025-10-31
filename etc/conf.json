@@ -1,0 +1,11 @@
+{
+  "format": "%H:%M:%S",
+  "date_format": "%A, %B %d, %Y",
+  "font": "georgian9",
+  "date_font": "term",
+  "date_prefix": "--+{ ",
+  "date_suffix": " }+--",
+  "show_date": true,
+  "interval_ms": 100,
+  "should_update_offset": false
+}
