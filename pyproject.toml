@@ -31,4 +31,4 @@ package-dir = {"" = "src"}
 where = ["src"]
 
 [project.scripts]
-cli-clock = "cli-clock.main:main"
+cli-clock = "cli_clock.main:launch"
