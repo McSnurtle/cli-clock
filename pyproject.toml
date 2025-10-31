@@ -17,3 +17,4 @@ classifiers = [
 ]
 [project.urls]
 Repository = "https://github.com/McSnurtle/cli-clock.git"
+Issues = "https://github.com/McSnurtle/cli-clock/issues"
