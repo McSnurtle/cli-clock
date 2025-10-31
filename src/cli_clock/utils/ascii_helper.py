@@ -2,8 +2,8 @@
 import art
 from typing import Iterable, Union, List, Tuple
 
-from utils.config import get_config
-from utils.clock import get_time
+from cli_clock.utils.config import get_config
+from cli_clock.utils.clock import get_time
 
 
 # ===== Variables =====

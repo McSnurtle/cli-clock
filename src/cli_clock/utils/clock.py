@@ -1,7 +1,7 @@
 # imports - timer.py clock
 import datetime
 
-from utils.config import get_config
+from cli_clock.utils.config import get_config
 
 
 # ===== Variables =====
