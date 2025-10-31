@@ -1,0 +1,19 @@
+[project]
+name = "cli_clock"
+dynamic = ["version"]
+authors = [
+    { name="McSnurtle" },
+]
+description = "Finally a clean, customizable CLI-based clock!"
+keywords = ["CLI", "command-line tool", "clock", "digital clock", "python"]
+readme = { file = "README.md", content-type = "text/markdown" }
+license = "LICENSE"
+requires = ["setuptools >= 77.0.3", "art >= 6.5"]
+build-backend = "setuptools.build_meta"
+requires-python = ">=3.6"
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+]
+[project.urls]
+Repository = "https://github.com/McSnurtle/cli-clock.git"

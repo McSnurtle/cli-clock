@@ -1,11 +1,7 @@
 # imports - timer.py
-import art
 import curses
-import datetime
 import sys
-import time
-from threading import Thread
-from typing import Any, List
+from typing import Any
 
 from utils.config import get_config
 from utils.clock import get_time
