@@ -14,5 +14,5 @@ def get_longest(texts: Union[Iterable[str], Tuple[str], List[str]]) -> int:
     return max([len(i) for i in texts])
 
 
-def INITIAL_X_OFFSET(font: str) -> int:
-    return get_longest(generate_ascii("12:34:56", font))
+def INITIAL_X_OFFSET(font: str, string: str = "12:34:56") -> int:
+    return get_longest(generate_ascii(string, font))

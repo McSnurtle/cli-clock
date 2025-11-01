@@ -3,11 +3,10 @@ Automatically loads tabs from the tabs/ directory.
 
 keybinds: dict[str, str] - a dictionary of "key button": "tab id"
 draw_functions: dict[str, callable] - a dictionary of "tab id": "tab draw func"
-tabs: dict[str, Any] - a dictionary of "tab id": "curses window"
+tabs: dict[str, Any] - a dictionary of "tab id": "Tab object"
 """
 # imports - cli-clock, tab_registry.py
 # All the functions needed by all the tabs
-import curses
 import pkgutil
 import inspect
 import importlib
@@ -19,6 +18,7 @@ from .tabs.base import Tab
 # ===== Variables =====
 keybinds: dict[str, str] = {}
 draw_functions: dict[str, Callable] = {}
+tabs: dict[str, Tab] = {}
 tips: list[str] = ["[Q]uit"]
 
 
@@ -34,7 +34,7 @@ def register_tabs(config: dict[str, Any]) -> None:
                 tab = obj(config)
                 keybinds[tab.keybind] = tab.name
                 draw_functions[tab.name] = tab.draw
-                print(f"Log: registering data for tab {name}")
+                tabs[tab.name] = tab
 
     for idx, key in enumerate(list(keybinds.keys())):
-        tips.append(f"[{key.upper()}]{list(draw_functions.keys())[idx][1::]}")
+        tips.append(f"[{key.upper()}]{list(tabs.keys())[idx][1::]}")
