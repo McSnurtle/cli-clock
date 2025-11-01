@@ -45,13 +45,12 @@ def main(stdscr) -> None:
 
             try:
                 draw_hints(stdscr, _height, _width)
-                print(tips)
 
                 draw_functions[current_tab](stdscr, _height, _width)
             except curses.error:
                 pass  # Terminal too small...
-            # except KeyError as e:
-            #     print(f"Error: attempted to open tab {current_tab} but it does not exist! ({e})")
+            except KeyError as e:
+                print(f"Error: attempted to open tab {current_tab} but it does not exist! ({e})")
 
             stdscr.refresh()
 
@@ -66,7 +65,6 @@ def main(stdscr) -> None:
                 stdscr.clear()
             elif event in [ord(key) for key in list(keybinds.keys())]:  # tab bindings
                 current_tab: str = keybinds[chr(event)]
-                print(f"Switching tab to: {keybinds[chr(event)]}")
 
             curses.napms(CONFIG["interval_ms"])
 
