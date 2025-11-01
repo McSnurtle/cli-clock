@@ -12,13 +12,13 @@ import pkgutil
 import inspect
 import importlib
 
-from typing import Any
+from typing import Any, Callable
 
 from .tabs.base import Tab
 
 # ===== Variables =====
 keybinds: dict[str, str] = {}
-draw_functions: dict[str, callable] = {}
+draw_functions: dict[str, Callable] = {}
 tips: list[str] = ["[Q]uit"]
 
 
