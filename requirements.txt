@@ -1,1 +1,2 @@
 art~=6.5
+windows-curses; sys_platform == "win32"
