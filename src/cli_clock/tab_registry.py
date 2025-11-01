@@ -19,6 +19,7 @@ from .tabs.base import Tab
 # ===== Variables =====
 keybinds: dict[str, str] = {}
 draw_functions: dict[str, Callable] = {}
+tabs: dict[str, Any] = {}
 tips: list[str] = ["[Q]uit"]
 
 
@@ -34,7 +35,8 @@ def register_tabs(config: dict[str, Any]) -> None:
                 tab = obj(config)
                 keybinds[tab.keybind] = tab.name
                 draw_functions[tab.name] = tab.draw
+                tabs[tab.name] = tab
                 print(f"Log: registering data for tab {name}")
 
     for idx, key in enumerate(list(keybinds.keys())):
-        tips.append(f"[{key.upper()}]{list(draw_functions.keys())[idx][1::]}")
+        tips.append(f"[{key.upper()}]{list(tabs.keys())[idx][1::]}")
