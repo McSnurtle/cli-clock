@@ -3,7 +3,7 @@ import curses
 import sys
 from typing import Any
 
-from .tab_registry import register_tabs, keybinds, draw_functions, tips
+from .tab_registry import register_tabs, keybinds, draw_functions, tabs, tips
 from .utils.config import init_config
 
 init_config()
@@ -30,11 +30,6 @@ def main(stdscr) -> None:
     stdscr.keypad(True)
 
     height, width = stdscr.getmaxyx()
-
-    tabs: dict[str, Any] = {
-        "clock": curses.newwin(height, width, 0, 0),
-        "timer": curses.newwin(height, width, 0, 0)
-    }
     current_tab: str = "clock"  # default tab
 
     try:
@@ -57,14 +52,16 @@ def main(stdscr) -> None:
             event = stdscr.getch()
             if event == ord('q'):
                 break
-            elif event == curses.KEY_RESIZE:
-                _height, _width = stdscr.getmaxyx()
-                for tab in tabs.values():
-                    tab.resize(_height, _width)
-                    tab.mvwin(0, 0)
-                stdscr.clear()
+            # elif event == curses.KEY_RESIZE:
+            #     _height, _width = stdscr.getmaxyx()
+            #     for tab in tabs.values():
+            #         tab.resize(_height, _width)
+            #         tab.mvwin(0, 0)
+            #     stdscr.clear()
             elif event in [ord(key) for key in list(keybinds.keys())]:  # tab bindings
                 current_tab: str = keybinds[chr(event)]
+            else:
+                tabs[current_tab].handle_event(event)
 
             curses.napms(CONFIG["interval_ms"])
 
