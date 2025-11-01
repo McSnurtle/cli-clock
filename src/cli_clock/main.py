@@ -3,11 +3,12 @@ import curses
 import sys
 from typing import Any
 
-from utils.config import get_config
-from utils.clock import get_time
-from utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
+from .utils.config import get_config, init_config
+from .utils.clock import get_time
+from .utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
 
 # ===== Variables =====
+init_config()
 RUNNING: bool = True
 CONFIG: dict[str, Any] = get_config()
 INTERVAL: int = CONFIG["interval_ms"]
@@ -76,14 +77,9 @@ def main(stdscr) -> None:
         sys.exit(0)
 
 
-if __name__ == '__main__':
-    # tarty1
-    # sblood
-    # roman
-    # rev
-    # georgia11
-    # fraktur
-    # fire_font-s
-    # colossal
-    # art.font_list()
+def launch() -> None:
     curses.wrapper(main)
+
+
+if __name__ == '__main__':
+    launch()
