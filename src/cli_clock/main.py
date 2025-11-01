@@ -66,7 +66,13 @@ def main(stdscr) -> None:
             curses.napms(CONFIG["interval_ms"])
 
     except KeyboardInterrupt:
-        sys.exit(0)
+        stop()
+
+
+def stop() -> None:
+    [[thread.join() for thread in tab.threads] for tab in tabs.values()]
+    curses.beep()
+    sys.exit(0)
 
 
 def launch() -> None:
