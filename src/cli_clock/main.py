@@ -3,13 +3,21 @@ import curses
 import sys
 from typing import Any
 
-from utils.ascii_helper import generate_ascii, get_longest
-from utils.clock import get_time
-from utils.config import init_config
+try:
+    from utils.ascii_helper import generate_ascii, get_longest
+    from utils.clock import get_time
+    from utils.config import init_config
+except ModuleNotFoundError:
+    from .utils.ascii_helper import generate_ascii, get_longest
+    from .utils.clock import get_time
+    from .utils.config import init_config
 
 init_config()
 
-from utils.config import get_config
+try:
+    from utils.config import get_config
+except ModuleNotFoundError:
+    from .utils.config import get_config
 
 # ===== Variables =====
 RUNNING: bool = True
