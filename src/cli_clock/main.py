@@ -3,14 +3,8 @@ import curses
 import sys
 from typing import Any
 
-try:
-    from utils.ascii_helper import generate_ascii, get_longest
-    from utils.clock import get_time
-    from utils.config import init_config
-except ModuleNotFoundError:
-    from .utils.ascii_helper import generate_ascii, get_longest
-    from .utils.clock import get_time
-    from .utils.config import init_config
+from .tab_registry import register_tabs, keybinds, draw_functions, tips
+from .utils.config import init_config
 
 init_config()
 
@@ -22,31 +16,9 @@ except ModuleNotFoundError:
 # ===== Variables =====
 RUNNING: bool = True
 CONFIG: dict[str, Any] = get_config()
-INTERVAL: int = CONFIG["interval_ms"]
-INITIAL_X_OFFSET: int = get_longest(generate_ascii(get_time(CONFIG["format"]), CONFIG["font"]))
-tips: list[str] = ["[Q]uit", "[C]lock", "[T]imer", "[A]larm", "[S]topwatch"]
 
 
 # ===== Functions =====
-def draw_time(stdscr, text: tuple[str], height: int, width: int) -> None:
-    for idx, line in enumerate(text):
-        x_offset = INITIAL_X_OFFSET
-        if CONFIG["should_update_offset"]:
-            x_offset = get_longest(text)
-        stdscr.addstr(
-            int(height * 0.5 - (len(text) * 0.5 - idx + 1)),
-            int(width * 0.5 - x_offset * 0.5),
-            line)
-
-
-def draw_date(stdscr, time_text: tuple[str], height: int, width: int) -> None:
-    date_text: str = f"{CONFIG['date_prefix']}{get_time(CONFIG['date_format'])}{CONFIG['date_suffix']}"
-    stdscr.addstr(
-        int((height * 0.5 - len(time_text) * 0.5 - 2)),
-        int((width * 0.5 - len(date_text) * 0.5)),
-        date_text)
-
-
 def draw_hints(stdscr, height: int, width: int) -> None:
     tips_buffer: str = "     " + "     ".join(tips) + "     "
     stdscr.addstr(height - 1, width // 2 - len(tips_buffer) // 2, tips_buffer)
@@ -57,41 +29,56 @@ def main(stdscr) -> None:
     stdscr.nodelay(True)
     stdscr.keypad(True)
 
+    height, width = stdscr.getmaxyx()
+
+    tabs: dict[str, Any] = {
+        "clock": curses.newwin(height, width, 0, 0),
+        "timer": curses.newwin(height, width, 0, 0)
+    }
+    current_tab: str = "clock"  # default tab
+
     try:
         while RUNNING:
             stdscr.erase()
-            height, width = stdscr.getmaxyx()
+            _height, _width = stdscr.getmaxyx()
             stdscr.border()
 
-            time_text: tuple[str] = generate_ascii(get_time(CONFIG["format"]), CONFIG["font"])
-
             try:
-                draw_time(stdscr, time_text, height, width)
-                if CONFIG["show_date"]:
-                    draw_date(stdscr, time_text, height, width)
-                draw_hints(stdscr, height, width)
+                draw_hints(stdscr, _height, _width)
+                print(tips)
+
+                draw_functions[current_tab](stdscr, _height, _width)
             except curses.error:
                 pass  # Terminal too small...
+            # except KeyError as e:
+            #     print(f"Error: attempted to open tab {current_tab} but it does not exist! ({e})")
 
             stdscr.refresh()
 
-            ch = stdscr.getch()
-            if ch == ord('q'):
+            event = stdscr.getch()
+            if event == ord('q'):
                 break
-            elif ch == ord('c'):
-                pass
-                # got to countdown screen
+            elif event == curses.KEY_RESIZE:
+                _height, _width = stdscr.getmaxyx()
+                for tab in tabs.values():
+                    tab.resize(_height, _width)
+                    tab.mvwin(0, 0)
+                stdscr.clear()
+            elif event in [ord(key) for key in list(keybinds.keys())]:  # tab bindings
+                current_tab: str = keybinds[chr(event)]
+                print(f"Switching tab to: {keybinds[chr(event)]}")
 
-            # Sleep a bit to reduce CPU usage
-            curses.napms(INTERVAL)
+            curses.napms(CONFIG["interval_ms"])
 
     except KeyboardInterrupt:
         sys.exit(0)
 
 
 def launch() -> None:
+    register_tabs(CONFIG)
     curses.wrapper(main)
 
 
 if __name__ == '__main__':
+    register_tabs(CONFIG)
     launch()
