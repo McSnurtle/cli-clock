@@ -3,21 +3,16 @@ import datetime
 from typing import Any
 from .base import Tab
 
-try:
-    from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
-except ImportError:
-    from src.cli_clock.utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
-
-# ===== Variables =====
-__bind__ = "c"
-__name__ = "clock"
+from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
 
 
+# ===== Functions =====
 def get_time(fmt: str) -> str:
     """Returns the formatted string representing the current system time."""
     return datetime.datetime.now().strftime(fmt)
 
 
+# ===== Classes =====
 class ClockTab(Tab):
     keybind = "c"
     name = "clock"
