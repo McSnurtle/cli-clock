@@ -3,14 +3,12 @@ import curses
 import sys
 from typing import Any
 
-from utils.config import get_config
+from utils.config import get_config, init_config
 from utils.clock import get_time
 from utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
 
 # ===== Variables =====
 RUNNING: bool = True
-CONFIG: dict[str, Any] = get_config()
-INTERVAL: int = CONFIG["interval_ms"]
 tips: list[str] = ["[Q]uit", "[C]lock", "[T]imer", "[A]larm", "[S]topwatch"]
 
 
@@ -81,4 +79,7 @@ def launch() -> None:
 
 
 if __name__ == '__main__':
+    init_config()
+    CONFIG: dict[str, Any] = get_config()
+    INTERVAL: int = CONFIG["interval_ms"]
     launch()
