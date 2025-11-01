@@ -34,11 +34,7 @@ def register_tabs(config: dict[str, Any]) -> None:
                 tab = obj(config)
                 keybinds[tab.keybind] = tab.name
                 draw_functions[tab.name] = tab.draw
-<<<<<<< Updated upstream
                 tabs[tab.name] = tab
-                print(f"Log: registering data for tab {name}")
-=======
->>>>>>> Stashed changes
 
     for idx, key in enumerate(list(keybinds.keys())):
         tips.append(f"[{key.upper()}]{list(tabs.keys())[idx][1::]}")
