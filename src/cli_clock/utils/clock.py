@@ -1,15 +1,9 @@
 # imports - timer.py clock
 import datetime
 
-from cli_clock.utils.config import get_config
-
-
-# ===== Variables =====
-FORMAT: str = get_config()["format"]
-
 
 # ===== Functions =====
-def get_time(fmt: str = FORMAT) -> str:
+def get_time(fmt: str) -> str:
     """Returns the formatted string representing the current system time."""
     return datetime.datetime.now().strftime(fmt)
 

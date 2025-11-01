@@ -3,15 +3,19 @@ import curses
 import sys
 from typing import Any
 
-from .utils.config import get_config, init_config
-from .utils.clock import get_time
-from .utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
+from utils.ascii_helper import generate_ascii, get_longest
+from utils.clock import get_time
+from utils.config import init_config
+
+init_config()
+
+from utils.config import get_config
 
 # ===== Variables =====
-init_config()
 RUNNING: bool = True
 CONFIG: dict[str, Any] = get_config()
 INTERVAL: int = CONFIG["interval_ms"]
+INITIAL_X_OFFSET: int = get_longest(generate_ascii(get_time(CONFIG["format"]), CONFIG["font"]))
 tips: list[str] = ["[Q]uit", "[C]lock", "[T]imer", "[A]larm", "[S]topwatch"]
 
 
@@ -51,7 +55,7 @@ def main(stdscr) -> None:
             height, width = stdscr.getmaxyx()
             stdscr.border()
 
-            time_text: tuple[str] = generate_ascii(get_time())
+            time_text: tuple[str] = generate_ascii(get_time(CONFIG["format"]), CONFIG["font"])
 
             try:
                 draw_time(stdscr, time_text, height, width)
