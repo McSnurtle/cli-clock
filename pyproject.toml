@@ -1,11 +1,11 @@
 [project]
 name = "cli-clock"
-version = "0.1.2"
+version = "0.3"
 authors = [
     { name="McSnurtle" },
 ]
 description = "Finally a clean, customizable CLI-based clock!"
-dependencies = ["art>=6.5", "windows-curses ; sys_platform == 'win32'"]
+dependencies = ["art>=6.5", "play-sounds>=0.6.0", "windows-curses ; sys_platform == 'win32'"]
 keywords = ["CLI", "command-line tool", "clock", "digital clock", "python"]
 readme = { file = "README.md", content-type = "text/markdown" }
 license = "GPL-3.0-only"
