@@ -2,12 +2,23 @@
 import curses
 import time
 from threading import Thread
+from pathlib import Path
+from play_sounds import play_file
 from typing import Any, Iterable, Iterator
 from .base import Tab
 
 from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
 
+# ===== Init =====
+curses.initscr()
+curses.start_color()
+curses.init_pair(1, curses.COLOR_BLACK, curses.COLOR_WHITE)
 
+# ===== Variables =====
+timer_sound: Path = Path("res/timer.mp3")
+
+
+# ===== Classes =====
 class EditableDigitManager(Iterable[int]):
     digits: list[int] = []
 
@@ -33,7 +44,7 @@ class EditableDigitManager(Iterable[int]):
 
     @property
     def hours(self) -> int:
-        return int(self.duration / 360) % 99    # don't have triple digit hours
+        return int(self.duration / 360) % 99  # don't have triple digit hours
 
     @property
     def minutes(self) -> int:
@@ -103,17 +114,19 @@ class TimerTab(Tab):
 
             if not self.PAUSED:
                 if self.remaining > 0:  # if more time to go... keep updating
-                    self.remaining = max([self.remaining - 1 * (time.time() - start),
+                    self.remaining = max([self.remaining - (time.time() - start),
                                           0])  # always get a minimum of zero to looping never happens
                 else:  # otherwise if timer running and nothing left to go... party! (playsound)
-                    # TODO: playsound
-                    pass
+                    play_file(timer_sound)
 
     def draw(self, stdscr, height: int, width: int) -> None:
         if not self.EDIT_MODE:
             time_text: tuple[str] = generate_ascii(self.get_time(), self.config["font"])
         else:
             time_text: tuple[str] = generate_ascii(self.manager.get_time(), self.config["font"])
+            # time_texts: list[tuple[str]] = [generate_ascii(str(self.manager.digits[idx]), self.config["font"]) for idx
+            #                                 in range(len(self.manager.digits))]
+            # time_text: list[str] = []
 
         for idx, line in enumerate(time_text):
             if self.config["should_update_offset"]:
