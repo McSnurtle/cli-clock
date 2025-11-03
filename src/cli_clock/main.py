@@ -52,12 +52,6 @@ def main(stdscr) -> None:
             event = stdscr.getch()
             if event == ord('q'):
                 break
-            # elif event == curses.KEY_RESIZE:
-            #     _height, _width = stdscr.getmaxyx()
-            #     for tab in tabs.values():
-            #         tab.resize(_height, _width)
-            #         tab.mvwin(0, 0)
-            #     stdscr.clear()
             elif event in [ord(key) for key in list(keybinds.keys())]:  # tab bindings
                 current_tab: str = keybinds[chr(event)]
             else:
