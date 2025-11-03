@@ -35,7 +35,7 @@ class EditableDigitManager(Iterable[int]):
 
     @property
     def duration(self) -> int:
-        hours: int = (10 * 360 * self.digits[0]) + (360 * self.digits[1])
+        hours: int = (10 * 3_600 * self.digits[0]) + (3_600 * self.digits[1])
         minutes: int = (10 * 60 * self.digits[2]) + (60 * self.digits[3])
         seconds: int = (10 * self.digits[4]) + self.digits[5]
         # TODO: make more concise
@@ -44,7 +44,7 @@ class EditableDigitManager(Iterable[int]):
 
     @property
     def hours(self) -> int:
-        return int(self.duration / 360) % 99  # don't have triple digit hours
+        return int(self.duration / 3_600) % 99  # don't have triple digit hours
 
     @property
     def minutes(self) -> int:
@@ -61,10 +61,10 @@ class EditableDigitManager(Iterable[int]):
         self.selected_index = self.selected_index - 1 % len(self.digits)
 
     def up(self) -> None:
-        self.digits[-self.selected_index] += 1
+        self.digits[-self.selected_index] = (self.digits[-self.selected_index] + 1) % 10
 
     def down(self) -> None:
-        self.digits[-self.selected_index] -= 1
+        self.digits[-self.selected_index] = (self.digits[-self.selected_index] - 1) % 10
 
     def get_time(self) -> str:
         return f"{self.digits[0]}{self.digits[1]}:{self.digits[2]}{self.digits[3]}:{self.digits[4]}{self.digits[5]}"
@@ -96,7 +96,7 @@ class TimerTab(Tab):
 
     @property
     def hours(self) -> int:
-        return int(self.remaining / 360)
+        return int(self.remaining / 3_600)
 
     @property
     def minutes(self) -> int:
