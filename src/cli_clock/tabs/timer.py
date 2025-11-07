@@ -1,10 +1,11 @@
 # imports
 import curses
 import time
+from datetime import datetime, timedelta
 from threading import Thread
 from pathlib import Path
 from play_sounds import play_file
-from typing import Any, Iterable, Iterator
+from typing import Any
 from .base import Tab
 
 from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
@@ -19,10 +20,11 @@ timer_sound: Path = Path("res/timer.mp3")
 
 
 # ===== Classes =====
-class EditableDigitManager(Iterable[int]):
+class EditableDigitManager(list[int]):
     digits: list[int] = []
 
     def __init__(self, hours: int, minutes: int, seconds: int):
+        super().__init__()
         buffer = ""
         for value in [hours, minutes, seconds]:
             buffer += f"{value:02}"
@@ -69,7 +71,7 @@ class EditableDigitManager(Iterable[int]):
     def get_time(self) -> str:
         return f"{self.digits[0]}{self.digits[1]}:{self.digits[2]}{self.digits[3]}:{self.digits[4]}{self.digits[5]}"
 
-    def __iter__(self) -> Iterator[int]:
+    def __iter__(self) -> list[int]:
         return self.digits
 
 
@@ -169,13 +171,13 @@ class TimerTab(Tab):
         if self.EDIT_MODE:
             if event == ord("e"):
                 self.save()
-            if event == curses.KEY_UP:
+            if event == curses.KEY_UP or event == ord("j"):
                 self.manager.up()
-            elif event == curses.KEY_DOWN:
+            elif event == curses.KEY_DOWN or event == ord("k"):
                 self.manager.down()
-            elif event == curses.KEY_LEFT:
+            elif event == curses.KEY_LEFT or event == ord("h"):
                 self.manager.left()
-            elif event == curses.KEY_RIGHT:
+            elif event == curses.KEY_RIGHT or event == ord("l"):
                 self.manager.right()
         elif not self.EDIT_MODE:
             if event == ord("e"):
@@ -198,4 +200,4 @@ class TimerTab(Tab):
         self.remaining = self.duration
 
     def get_time(self) -> str:
-        return f"{self.hours:02}:{self.minutes:02}:{self.seconds:02}"
+        return (datetime(1, 1, 1) + timedelta(seconds=self.remaining)).strftime("%H:%M:%S")
