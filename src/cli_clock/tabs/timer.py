@@ -33,7 +33,7 @@ class EditableDigitManager(list[int]):
         # [self.digits.append(int(char)) for char in f"{value:02}" for value in [hours, minutes, seconds]]  # append each digit from the args
         # [self.digits.append(0) for _ in range(6 - len(self.digits)) if len(self.digits) < 6]    # if not enough digits, add zeroes
 
-        self.selected_index: int = 0
+        self.selected_index: int = 1
 
     @property
     def duration(self) -> int:
