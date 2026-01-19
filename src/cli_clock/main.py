@@ -43,7 +43,12 @@ def main(stdscr) -> None:
 
                 draw_functions[current_tab](stdscr, _height, _width)
             except curses.error:
-                pass  # Terminal too small...
+                    warning_message = "Terminal size too small! Resize to continue or [Q]uit"
+                    stdscr.erase()
+                    try:
+                        stdscr.addstr(_height // 2, _width // 2 - len(warning_message) // 2, warning_message)
+                    except curses.error:
+                        pass
             except KeyError as e:
                 print(f"Error: attempted to open tab {current_tab} but it does not exist! ({e})")
 
