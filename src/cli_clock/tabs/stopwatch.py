@@ -3,7 +3,7 @@ import time
 from threading import Thread
 from datetime import datetime, timedelta
 from typing import Any
-from .base import Tab
+from core.src.core.tabs.base import Tab
 
 from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
 

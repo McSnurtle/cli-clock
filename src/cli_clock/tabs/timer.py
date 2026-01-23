@@ -6,7 +6,7 @@ from threading import Thread
 from pathlib import Path
 from play_sounds import play_file
 from typing import Any
-from .base import Tab
+from core.src.core.tabs.base import Tab
 
 from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
 
