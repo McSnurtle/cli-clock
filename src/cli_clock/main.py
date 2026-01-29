@@ -22,7 +22,6 @@ CONFIG: dict[str, Any] = get_config()
 
 def stop() -> None:
     [[thread.join() for thread in tab.threads] for tab in tabs.values()]
-    curses.beep()
     sys.exit(0)
 
 
