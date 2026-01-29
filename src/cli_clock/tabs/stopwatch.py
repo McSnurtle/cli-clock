@@ -31,7 +31,7 @@ class StopwatchTab(Tab):
             if not self.paused:
                 self.elapsed += time.time() - start
 
-    def draw(self, stdscr, height: int, width: int) -> None:
+    def draw(self, stdscr, width: int, height: int) -> None:
         time_text: tuple[str] = generate_ascii(self.get_time(), self.config["font"])
 
         for idx, line in enumerate(time_text):

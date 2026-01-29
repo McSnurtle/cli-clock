@@ -17,7 +17,7 @@ class ClockTab(Tab):
     keybind = "c"
     name = "clock"
 
-    def draw(self, stdscr, height: int, width: int) -> None:
+    def draw(self, stdscr, width: int, height: int) -> None:
         time_text: tuple[str] = generate_ascii(get_time(self.config["format"]), self.config["font"])
 
         for idx, line in enumerate(time_text):

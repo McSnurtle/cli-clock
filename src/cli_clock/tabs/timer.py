@@ -122,7 +122,7 @@ class TimerTab(Tab):
                 else:  # otherwise if timer running and nothing left to go... party! (playsound)
                     play_file(timer_sound)
 
-    def draw(self, stdscr, height: int, width: int) -> None:
+    def draw(self, stdscr, width: int, height: int) -> None:
         if not self.EDIT_MODE:
             time_text: tuple[str] = generate_ascii(self.get_time(), self.config["font"])
         else:
