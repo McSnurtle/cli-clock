@@ -3,6 +3,8 @@ import time
 from threading import Thread
 from datetime import datetime, timedelta
 from typing import Any
+
+from core.src.core.event_bus import EventBus
 from core.src.core.tabs.base import Tab
 
 from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
@@ -12,8 +14,8 @@ class StopwatchTab(Tab):
     keybind = "s"
     name = "stopwatch"
 
-    def __init__(self, config: dict[str, Any]):
-        super().__init__(config)
+    def __init__(self, event_bus: EventBus, config: dict[str, Any]):
+        super().__init__(event_bus, config)
         self.elapsed: float = 0.0
         self.paused: bool = True
         self.stopwatch_thread: Thread = Thread(target=self.stopwatch_loop, daemon=True)

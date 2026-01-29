@@ -4,6 +4,7 @@ import sys
 from typing import Any
 
 from core.src.core.app import App
+from core.src.core.event_bus import EventBus
 from core.src.core.tab_registry import register_tabs, keybinds, draw_functions, tabs, tips
 from .utils.config import init_config
 
@@ -26,8 +27,9 @@ def stop() -> None:
 
 
 def launch() -> None:
-    register_tabs("cli_clock.tabs", CONFIG)
-    app = App("CLI-Clock", "clock", CONFIG)
+    event_bus = EventBus()
+    register_tabs("cli_clock.tabs", event_bus, CONFIG)
+    app = App("CLI-Clock", "clock", event_bus, CONFIG)
     app.run()
 
 
