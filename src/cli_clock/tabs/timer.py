@@ -6,6 +6,7 @@ from threading import Thread
 from pathlib import Path
 from play_sounds import play_file
 from typing import Any
+from core.src.core.event_bus import EventBus
 from core.src.core.tabs.base import Tab
 
 from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
@@ -79,8 +80,8 @@ class TimerTab(Tab):
     keybind = "t"
     name = "timer"
 
-    def __init__(self, config: dict[str, Any]):
-        super().__init__(config)
+    def __init__(self, event_bus: EventBus, config: dict[str, Any]):
+        super().__init__(event_bus, config)
         # flags
         self.PAUSED: bool = True
         self.EDIT_MODE: bool = True
