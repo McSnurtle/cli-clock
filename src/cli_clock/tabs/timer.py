@@ -8,7 +8,7 @@ from play_sounds import play_file
 from typing import Any
 
 from core.src.core.app import App
-from core.src.core.event_bus import EventBus
+from core.src.core.event_bus import EventBus, Event, EventType
 from core.src.core.tabs.base import Tab
 
 from cli_clock.utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
@@ -166,24 +166,27 @@ class TimerTab(Tab):
                 tip
             )
 
-    def handle_event(self, event: int):
-        if event == ord("p"):
+    def handle_event(self, event: Event) -> bool:
+        if event.type != EventType.KEY:
+            return False
+
+        if event.payload == ord("p"):
             self.toggle()
-        elif event == ord("r"):
+        elif event.payload == ord("r"):
             self.reset()
         if self.EDIT_MODE:
-            if event == ord("e"):
+            if event.payload == ord("e"):
                 self.save()
-            if event == curses.KEY_UP or event == ord("j"):
+            if event.payload == curses.KEY_UP or event == ord("j"):
                 self.manager.up()
-            elif event == curses.KEY_DOWN or event == ord("k"):
+            elif event.payload == curses.KEY_DOWN or event == ord("k"):
                 self.manager.down()
-            elif event == curses.KEY_LEFT or event == ord("h"):
+            elif event.payload == curses.KEY_LEFT or event == ord("h"):
                 self.manager.left()
-            elif event == curses.KEY_RIGHT or event == ord("l"):
+            elif event.payload == curses.KEY_RIGHT or event == ord("l"):
                 self.manager.right()
         elif not self.EDIT_MODE:
-            if event == ord("e"):
+            if event.payload == ord("e"):
                 self.edit()
 
     def edit(self) -> None:

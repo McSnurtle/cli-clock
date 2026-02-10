@@ -4,7 +4,7 @@ from threading import Thread
 from datetime import datetime, timedelta
 from typing import Any
 
-from core.src.core.event_bus import EventBus
+from core.src.core.event_bus import EventBus, Event, EventType
 from core.src.core.tabs.base import Tab
 from core.src.core.app import App
 
@@ -54,12 +54,15 @@ class StopwatchTab(Tab):
             "[B]egin     [P]ause     [R]eset"
         )
 
-    def handle_event(self, event: int):
-        if event == ord("b"):
+    def handle_event(self, event: Event) -> bool:
+        if event.type != EventType.KEY:
+            return False
+
+        if event.payload == ord("b"):
             self.begin()
-        if event == ord("p"):
+        if event.payload == ord("p"):
             self.toggle()
-        elif event == ord("r"):
+        elif event.payload == ord("r"):
             self.reset()
 
     def begin(self):
