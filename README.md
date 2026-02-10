@@ -1,5 +1,6 @@
 # cli-clock.py 🕐
 Finally a customizable, centered, nice CLI-based clock.
+**NOTICE**: This branch is currently undergoing a major refactor to the new backend [cli-core](<https://github.com/McSnurtle/cli-core>) -- things will be broken, cli-core is still being updated, here be dragons!
 
 <img width="1280" height="720" alt="image" src="https://github.com/user-attachments/assets/6cff4704-a824-4fba-bde2-77aa365673bb" />
 
