@@ -3,7 +3,7 @@ import datetime
 from typing import Any
 from core.src.core.tabs.base import Tab
 
-from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
+from cli_clock.utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
 
 
 # ===== Functions =====
@@ -17,7 +17,7 @@ class ClockTab(Tab):
     keybind = "c"
     name = "clock"
 
-    def draw(self, stdscr, width: int, height: int) -> None:
+    def draw(self, stdscr, width: int, height: int, dt: float) -> None:
         time_text: tuple[str] = generate_ascii(get_time(self.config["format"]), self.config["font"])
 
         for idx, line in enumerate(time_text):

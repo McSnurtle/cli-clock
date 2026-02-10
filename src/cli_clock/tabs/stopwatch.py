@@ -6,8 +6,9 @@ from typing import Any
 
 from core.src.core.event_bus import EventBus
 from core.src.core.tabs.base import Tab
+from core.src.core.app import App
 
-from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
+from cli_clock.utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
 
 
 class StopwatchTab(Tab):
@@ -23,7 +24,7 @@ class StopwatchTab(Tab):
         self.threads = [self.stopwatch_thread]
 
     def stopwatch_loop(self):
-        while True:
+        while App.running:
             start = time.time()
 
             time.sleep(self.config["interval_ms"] * 0.001)
@@ -31,7 +32,7 @@ class StopwatchTab(Tab):
             if not self.paused:
                 self.elapsed += time.time() - start
 
-    def draw(self, stdscr, width: int, height: int) -> None:
+    def draw(self, stdscr, width: int, height: int, dt: float) -> None:
         time_text: tuple[str] = generate_ascii(self.get_time(), self.config["font"])
 
         for idx, line in enumerate(time_text):

@@ -6,10 +6,12 @@ from threading import Thread
 from pathlib import Path
 from play_sounds import play_file
 from typing import Any
+
+from core.src.core.app import App
 from core.src.core.event_bus import EventBus
 from core.src.core.tabs.base import Tab
 
-from ..utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
+from cli_clock.utils.ascii_helper import generate_ascii, get_longest, INITIAL_X_OFFSET
 
 # ===== Init =====
 curses.initscr()
@@ -110,7 +112,7 @@ class TimerTab(Tab):
         return int(self.remaining % 60)
 
     def timer_loop(self):
-        while True:
+        while App.running:
             start = time.time()
 
             time.sleep(self.config["interval_ms"] * 0.001)
@@ -122,7 +124,7 @@ class TimerTab(Tab):
                 else:  # otherwise if timer running and nothing left to go... party! (playsound)
                     play_file(timer_sound)
 
-    def draw(self, stdscr, width: int, height: int) -> None:
+    def draw(self, stdscr, width: int, height: int, dt: float) -> None:
         if not self.EDIT_MODE:
             time_text: tuple[str] = generate_ascii(self.get_time(), self.config["font"])
         else:
